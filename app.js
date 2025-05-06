@@ -3,7 +3,7 @@ import cors from 'cors'
 import { createMovieRouter } from './routes/movies.js'
 import { corsMiddleware } from './middlewares/cors.js'
 import 'dotenv/config'
-import { PORT } from './config.js'
+import { PUERTO } from './config.js'
 
 export const createApp = ({ movieModel }) => {
     // el import del futuro
@@ -28,7 +28,7 @@ export const createApp = ({ movieModel }) => {
 
     app.use('/movies', createMovieRouter({ movieModel }))
 
-    const PORT = process.env.PORT || 1234
+    const PORT = process.env.PORT || PUERTO
 
     app.listen(PORT, () => {
         console.log(`server listening on port http://localhost:${PORT}`)
