@@ -1,16 +1,36 @@
 import mysql from 'mysql2/promise'
-import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, DB_URL } from '../../config.js'
+import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } from '../../config.js'
+import { parse } from 'url';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const dbUrl = process.env.MYSQL_PUBLIC_URL;
+const parsed = parse(dbUrl);
+
+// Extraer datos
+const [user, password] = parsed.auth.split(':');
+const host = parsed.hostname;
+const port = parsed.port;
+const database = parsed.pathname.replace('/', ''); // quitar la barra inicial
+
+const URL_CONFIG = {
+    host: host,
+    port: port,
+    user: user,
+    password: password,
+    database: database
+}
 
 const DEFAULT_CONFIG = {
     host: DB_HOST,
-    user: DB_USER,
     port: DB_PORT,
+    user: DB_USER,
     password: DB_PASSWORD,
-    database: DB_NAME,
-    url: DB_URL
+    database: DB_NAME
 }
 
-const connectionString = DEFAULT_CONFIG
+const connectionString = URL_CONFIG ?? DEFAULT_CONFIG
 
 const connection = await mysql.createConnection(connectionString)
 
