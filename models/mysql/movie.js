@@ -1,15 +1,16 @@
 import mysql from 'mysql2/promise'
-import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } from '../../config.js'
+import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, DB_URL } from '../../config.js'
 
 const DEFAULT_CONFIG = {
     host: DB_HOST,
     user: DB_USER,
     port: DB_PORT,
     password: DB_PASSWORD,
-    database: DB_NAME
+    database: DB_NAME,
+    url: DB_URL
 }
 
-const connectionString = process.env.DATABASE_URL ?? DEFAULT_CONFIG
+const connectionString = DEFAULT_CONFIG
 
 const connection = await mysql.createConnection(connectionString)
 
